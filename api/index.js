@@ -4,11 +4,19 @@ const addonInterface = require('../lib/addon');
 
 const app = express();
 
+// Enable CORS for Stremio
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  res.setHeader('Content-Type', 'application/json');
+  next();
+});
+
 // Use the Stremio addon router
 const router = getRouter(addonInterface);
 app.use(router);
 
-// Basic health check or landing page
+// Landing page redirect
 app.get('/', (req, res) => {
   res.redirect('/manifest.json');
 });
